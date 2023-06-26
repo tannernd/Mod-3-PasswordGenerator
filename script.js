@@ -21,7 +21,7 @@ function generatePassword() {
   const lowerCase = "abcdefghijklmnopqrstuvwxyz";
   const numbers = "0123456789";
   const specialChar = "!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~\\";
-  var criteria;
+  var criteria = "";
   var passLength;
   var passUpper;  
   var passLower;
@@ -29,6 +29,7 @@ function generatePassword() {
   var validLength = false;
   var validYesNo = false;
 
+  console.log(typeof numbers);
   //Prompt for password length until a valid number in range is made
   do {
     passLength = parseInt(prompt('Please enter the desired password length from 8 to 128:')) || 0;
@@ -52,6 +53,13 @@ function generatePassword() {
   }
   while (validYesNo === false);
 
+  //Prompt if password should contain special characters until valid Yes or No is entered
+  do {
+    passSpccial = prompt('Would you like to use special characters? Enter "Y" for Yes or "N" for No:');
+    passSpccial = passSpccial.toLowerCase();
+    validYesNo = validInputYesNo(passSpccial);    
+  }
+  while (validYesNo === false);  
 }
 
 //Validate the user input to ensure that only numbers within the allowed values are passed are passed.
