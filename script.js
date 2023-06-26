@@ -74,7 +74,7 @@ function getPassLength(promptMessage) {
   do {
     userLength = prompt(promptMessage);
     if (userLength === null) {
-      throw new Error("You canceled, exiting the generator.");
+      throw new Error("User canceled, exiting the generator.");
     }      
     userLength = parseInt(userLength) || 0;
     validLength = validateInputNumber(userLength); 
@@ -91,7 +91,7 @@ function getPassCriteria(promptMessage) {
   do {
     userInput = prompt(promptMessage);
     if (userInput === null) {
-      throw new Error("You canceled, exiting the generator.");
+      throw new Error("User canceled, exiting the generator.");
     }  
     userInput = userInput.toLowerCase();
     validYesNo = validInputYesNo(userInput);    
