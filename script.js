@@ -38,9 +38,17 @@ function generatePassword() {
 
   //Prompt if password should contain uppercase letters until valid Yes or No is entered
   do {
-    passUpper = prompt('Would you like to use Uppercase Letters? Enter "Y" for Yes or "N" for No:');
+    passUpper = prompt('Would you like to use uppercase letters? Enter "Y" for Yes or "N" for No:');
     passUpper = passUpper.toLowerCase();
     validYesNo = validInputYesNo(passUpper);    
+  }
+  while (validYesNo === false);
+
+  //Prompt if password should contain lowercase letters until valid Yes or No is entered
+  do {
+    passLower = prompt('Would you like to use lowercase letters? Enter "Y" for Yes or "N" for No:');
+    passLower = passLower.toLowerCase();
+    validYesNo = validInputYesNo(passLower);    
   }
   while (validYesNo === false);
 
@@ -48,7 +56,7 @@ function generatePassword() {
 
 //Validate the user input to ensure that only numbers within the allowed values are passed are passed.
 function validateInputNumber(passLength) {
-  var alertText = "You must enter a valid number between 8 and 128.  Please try again";
+  const alertText = "You must enter a valid number between 8 and 128.  Please try again";
   if (passLength < 8 || passLength > 128) {
     alert (alertText);
     return false;
@@ -58,7 +66,7 @@ function validateInputNumber(passLength) {
 }
 
 function validInputYesNo(response) {
-  var alertText = "Please enter either \"Y\" for Yes or \"N\" for No";
+  const alertText = "Please enter either \"Y\" for Yes or \"N\" for No";
   if (response === "y" || response === "n" || response ==="yes" || response === "no") {
     return true;
   } else {
