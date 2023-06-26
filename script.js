@@ -17,93 +17,105 @@ function writePassword() {
 
 //Generate the password
 function generatePassword() {
-  const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const lowerCase = "abcdefghijklmnopqrstuvwxyz";
-  const numbers = "0123456789";
-  const specialChar = "!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~\\";
+  //Prompt Message Constants
+  const lengthMessage = "Please enter the desired password length from 8 to 128:";
+  const upperMessage = "Would you like to use uppercase letters? Enter \"Y\" for Yes or \"N\" for No:";
+  const lowerMessage = "Would you like to use lowercase letters? Enter \"Y\" for Yes or \"N\" for No:";
+  const specialMessage = "Would you like to use special characters? Enter \"Y\" for Yes or \"N\" for No:";
+  const numberMessage = "Would you like to use numbers? Enter \"Y\" for Yes or \"N\" for No:";
+  
+  //Define Variables
   var criteria = "";
   var passLength;
   var passUpper;  
   var passLower;
   var passSpecial;
   var passNumbers;
-  var validLength = false;
-  var validYesNo = false;
+  var password = "";
   var validCriteria = false;
 
-  do {
+  do {    
     //Prompt for password length until a valid number in range is made
-    do {
-      passLength = parseInt(prompt('Please enter the desired password length from 8 to 128:')) || 0;
-      validLength = validateInputNumber(passLength);    
-    }
-    while (validLength === false);
+    passLength = getPassLength(lengthMessage);
 
     //Prompt if password should contain uppercase letters until valid Yes or No is entered
-    do {
-      passUpper = prompt('Would you like to use uppercase letters? Enter "Y" for Yes or "N" for No:');
-      passUpper = passUpper.toLowerCase();
-      validYesNo = validInputYesNo(passUpper);    
-    }
-    while (validYesNo === false);
+    passUpper = getPassCriteria(upperMessage);
 
     //Prompt if password should contain lowercase letters until valid Yes or No is entered
-    do {
-      passLower = prompt('Would you like to use lowercase letters? Enter "Y" for Yes or "N" for No:');
-      passLower = passLower.toLowerCase();
-      validYesNo = validInputYesNo(passLower);    
-    }
-    while (validYesNo === false);
+    passLower = getPassCriteria(lowerMessage);
 
     //Prompt if password should contain special characters until valid Yes or No is entered
-    do {
-      passSpecial = prompt('Would you like to use special characters? Enter "Y" for Yes or "N" for No:');
-      passSpecial = passSpecial.toLowerCase();
-      validYesNo = validInputYesNo(passSpecial);    
-    }
-    while (validYesNo === false); 
+    passSpecial = getPassCriteria(specialMessage);
     
     //Prompt if password should contain numbers until valid Yes or No is entered
-    do {
-      passNumbers = prompt('Would you like to use numbers? Enter "Y" for Yes or "N" for No:');
-      passNumbers = passNumbers.toLowerCase();
-      validYesNo = validInputYesNo(passNumbers);    
-    }
-    while (validYesNo === false);
+    passNumbers = getPassCriteria(numberMessage);
 
-    //Check that at least one of the criteria has a "Y" entered
-    if(passUpper === "y" || passUpper === "yes") {
-      validCriteria = true;
-    } else if (passLower === "y" || passLower === "yes") {
-      validCriteria = true;
-    } else if (passSpecial === "y" || passSpecial === "yes") {
-      validCriteria = true;
-    } else if (passNumbers === "y" || passNumbers === "yes") {
-      validCriteria = true;
-    } else {
-      alert("You must select at least one critiera.  Please try again.");
-      validCriteria = false;
-    }
+    //Check that at least one of the criteria has a "y" entered
+    validCriteria = validInputCriteria(passUpper, passLower, passSpecial, passNumbers);
   }
   while (validCriteria === false);
+
+  //Populate the criteria string based on the users critieria selections
+  criteria = getPasswordCritieriaString(passUpper, passLower, passSpecial, passNumbers);
   
-  if(passUpper === "y" || passUpper === "yes") {
-    criteria += upperCase;
+  //Generate the password from the criteria sting with randomization
+  for(var i=0;i<passLength;i++) {
+    password += criteria.charAt(Math.floor(Math.random() * criteria.length));
   }
+
+  return password;
   
-  if (passLower === "y" || passLower === "yes") {
-    criteria += lowerCase;
+}
+
+//Prompts for the password length
+function getPassLength(promptMessage) {
+  var validLength = false;
+  var userLength;
+  do {
+    userLength = parseInt(prompt(promptMessage)) || 0;
+    validLength = validateInputNumber(userLength);    
   }
-  
-  if (passSpecial === "y" || passSpecial === "yes") {
-    criteria += specialChar;
+  while (validLength === false);
+  return userLength;
+}
+
+//Prompts for the password critiera
+function getPassCriteria(promptMessage) {
+  var userInput = "";
+  var validYesNo = false;
+  do {
+    userInput = prompt(promptMessage);
+    userInput = userInput.toLowerCase();
+    validYesNo = validInputYesNo(userInput);    
   }
-  
-  if (passNumbers === "y" || passNumbers === "yes") {
-    criteria += numbers;
-  } 
-  
-  console.log(criteria);
+  while (validYesNo === false);
+  return userInput;
+}
+
+//Generates the password criteria and returns a string
+function getPasswordCritieriaString(passUpper, passLower, passSpecial, passNumbers) {
+    //Password Critiera Constants
+    const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
+    const specialChar = "!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~\\";
+
+    var criteria = "";
+
+    if(passUpper === "y" || passUpper === "yes") {
+      criteria += upperCase;
+    }  
+    if (passLower === "y" || passLower === "yes") {
+      criteria += lowerCase;
+    }  
+    if (passSpecial === "y" || passSpecial === "yes") {
+      criteria += specialChar;
+    }  
+    if (passNumbers === "y" || passNumbers === "yes") {
+      criteria += numbers;
+    } 
+
+    return criteria;
 }
 
 //Validate the user input to ensure that only numbers within the allowed values are passed are passed.
@@ -126,6 +138,24 @@ function validInputYesNo(response) {
     alert(alertText);
     return false;
   }
-
 }
 
+//Validate that one of the criteria was entered with a "Y"
+function validInputCriteria(passUpper, passLower, passSpecial, passNumbers) {
+  var valid = false;
+  
+  if(passUpper === "y" || passUpper === "yes") {
+    valid = true;
+  } else if (passLower === "y" || passLower === "yes") {
+    valid = true;
+  } else if (passSpecial === "y" || passSpecial === "yes") {
+    valid = true;
+  } else if (passNumbers === "y" || passNumbers === "yes") {
+    valid = true;
+  } else {
+    alert("You must select at least one critiera.  Please try again.");
+    valid = false;
+  }
+  
+  return valid;
+}
