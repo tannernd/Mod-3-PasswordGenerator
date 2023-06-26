@@ -46,7 +46,7 @@ function generatePassword() {
 
     //Prompt if password should contain special characters until valid Yes or No is entered
     passSpecial = getPassCriteria(specialMessage);
-    
+
     //Prompt if password should contain numbers until valid Yes or No is entered
     passNumbers = getPassCriteria(numberMessage);
 
@@ -72,8 +72,13 @@ function getPassLength(promptMessage) {
   var validLength = false;
   var userLength;
   do {
-    userLength = parseInt(prompt(promptMessage)) || 0;
-    validLength = validateInputNumber(userLength);    
+    userLength = prompt(promptMessage);
+    if (userLength === null) {
+      throw new Error("You canceled, exiting the generator.");
+    }      
+    userLength = parseInt(userLength) || 0;
+    validLength = validateInputNumber(userLength); 
+     
   }
   while (validLength === false);
   return userLength;
@@ -85,6 +90,9 @@ function getPassCriteria(promptMessage) {
   var validYesNo = false;
   do {
     userInput = prompt(promptMessage);
+    if (userInput === null) {
+      throw new Error("You canceled, exiting the generator.");
+    }  
     userInput = userInput.toLowerCase();
     validYesNo = validInputYesNo(userInput);    
   }
