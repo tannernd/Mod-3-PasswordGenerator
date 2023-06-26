@@ -86,6 +86,24 @@ function generatePassword() {
     }
   }
   while (validCriteria === false);
+  
+  if(passUpper === "y" || passUpper === "yes") {
+    criteria += upperCase;
+  }
+  
+  if (passLower === "y" || passLower === "yes") {
+    criteria += lowerCase;
+  }
+  
+  if (passSpecial === "y" || passSpecial === "yes") {
+    criteria += specialChar;
+  }
+  
+  if (passNumbers === "y" || passNumbers === "yes") {
+    criteria += numbers;
+  } 
+  
+  console.log(criteria);
 }
 
 //Validate the user input to ensure that only numbers within the allowed values are passed are passed.
