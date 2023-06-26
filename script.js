@@ -29,45 +29,63 @@ function generatePassword() {
   var passNumbers;
   var validLength = false;
   var validYesNo = false;
+  var validCriteria = false;
 
-  //Prompt for password length until a valid number in range is made
   do {
-    passLength = parseInt(prompt('Please enter the desired password length from 8 to 128:')) || 0;
-    validLength = validateInputNumber(passLength);    
-  }
-  while (validLength === false);
+    //Prompt for password length until a valid number in range is made
+    do {
+      passLength = parseInt(prompt('Please enter the desired password length from 8 to 128:')) || 0;
+      validLength = validateInputNumber(passLength);    
+    }
+    while (validLength === false);
 
-  //Prompt if password should contain uppercase letters until valid Yes or No is entered
-  do {
-    passUpper = prompt('Would you like to use uppercase letters? Enter "Y" for Yes or "N" for No:');
-    passUpper = passUpper.toLowerCase();
-    validYesNo = validInputYesNo(passUpper);    
-  }
-  while (validYesNo === false);
+    //Prompt if password should contain uppercase letters until valid Yes or No is entered
+    do {
+      passUpper = prompt('Would you like to use uppercase letters? Enter "Y" for Yes or "N" for No:');
+      passUpper = passUpper.toLowerCase();
+      validYesNo = validInputYesNo(passUpper);    
+    }
+    while (validYesNo === false);
 
-  //Prompt if password should contain lowercase letters until valid Yes or No is entered
-  do {
-    passLower = prompt('Would you like to use lowercase letters? Enter "Y" for Yes or "N" for No:');
-    passLower = passLower.toLowerCase();
-    validYesNo = validInputYesNo(passLower);    
-  }
-  while (validYesNo === false);
+    //Prompt if password should contain lowercase letters until valid Yes or No is entered
+    do {
+      passLower = prompt('Would you like to use lowercase letters? Enter "Y" for Yes or "N" for No:');
+      passLower = passLower.toLowerCase();
+      validYesNo = validInputYesNo(passLower);    
+    }
+    while (validYesNo === false);
 
-  //Prompt if password should contain special characters until valid Yes or No is entered
-  do {
-    passSpecial = prompt('Would you like to use special characters? Enter "Y" for Yes or "N" for No:');
-    passSpecial = passSpecial.toLowerCase();
-    validYesNo = validInputYesNo(passSpecial);    
+    //Prompt if password should contain special characters until valid Yes or No is entered
+    do {
+      passSpecial = prompt('Would you like to use special characters? Enter "Y" for Yes or "N" for No:');
+      passSpecial = passSpecial.toLowerCase();
+      validYesNo = validInputYesNo(passSpecial);    
+    }
+    while (validYesNo === false); 
+    
+    //Prompt if password should contain numbers until valid Yes or No is entered
+    do {
+      passNumbers = prompt('Would you like to use numbers? Enter "Y" for Yes or "N" for No:');
+      passNumbers = passNumbers.toLowerCase();
+      validYesNo = validInputYesNo(passNumbers);    
+    }
+    while (validYesNo === false);
+
+    //Check that at least one of the criteria has a "Y" entered
+    if(passUpper === "y" || passUpper === "yes") {
+      validCriteria = true;
+    } else if (passLower === "y" || passLower === "yes") {
+      validCriteria = true;
+    } else if (passSpecial === "y" || passSpecial === "yes") {
+      validCriteria = true;
+    } else if (passNumbers === "y" || passNumbers === "yes") {
+      validCriteria = true;
+    } else {
+      alert("You must select at least one critiera.  Please try again.");
+      validCriteria = false;
+    }
   }
-  while (validYesNo === false); 
-  
-  //Prompt if password should contain numbers until valid Yes or No is entered
-  do {
-    passNumbers = prompt('Would you like to use numbers? Enter "Y" for Yes or "N" for No:');
-    passNumbers = passNumbers.toLowerCase();
-    validYesNo = validInputYesNo(passNumbers);    
-  }
-  while (validYesNo === false);
+  while (validCriteria === false);
 }
 
 //Validate the user input to ensure that only numbers within the allowed values are passed are passed.
