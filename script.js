@@ -25,11 +25,11 @@ function generatePassword() {
   var passLength;
   var passUpper;  
   var passLower;
-  var passSpccial;
+  var passSpecial;
+  var passNumbers;
   var validLength = false;
   var validYesNo = false;
 
-  console.log(typeof numbers);
   //Prompt for password length until a valid number in range is made
   do {
     passLength = parseInt(prompt('Please enter the desired password length from 8 to 128:')) || 0;
@@ -55,11 +55,19 @@ function generatePassword() {
 
   //Prompt if password should contain special characters until valid Yes or No is entered
   do {
-    passSpccial = prompt('Would you like to use special characters? Enter "Y" for Yes or "N" for No:');
-    passSpccial = passSpccial.toLowerCase();
-    validYesNo = validInputYesNo(passSpccial);    
+    passSpecial = prompt('Would you like to use special characters? Enter "Y" for Yes or "N" for No:');
+    passSpecial = passSpecial.toLowerCase();
+    validYesNo = validInputYesNo(passSpecial);    
   }
-  while (validYesNo === false);  
+  while (validYesNo === false); 
+  
+  //Prompt if password should contain numbers until valid Yes or No is entered
+  do {
+    passNumbers = prompt('Would you like to use numbers? Enter "Y" for Yes or "N" for No:');
+    passNumbers = passNumbers.toLowerCase();
+    validYesNo = validInputYesNo(passNumbers);    
+  }
+  while (validYesNo === false);
 }
 
 //Validate the user input to ensure that only numbers within the allowed values are passed are passed.
@@ -73,6 +81,7 @@ function validateInputNumber(passLength) {
   }  
 }
 
+//Validate the user input to ensure a proper Yes or No response. 
 function validInputYesNo(response) {
   const alertText = "Please enter either \"Y\" for Yes or \"N\" for No";
   if (response === "y" || response === "n" || response ==="yes" || response === "no") {
